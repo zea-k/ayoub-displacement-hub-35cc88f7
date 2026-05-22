@@ -19,10 +19,10 @@ function FitBounds({ shopPos, userPos, routeCoords }: Omit<Props, "shopName">) {
         ? [shopPos, userPos]
         : [shopPos];
     if (points.length === 1) {
-      map.setView(points[0], 15);
+      map.setView(points[0], 18);
     } else {
       const bounds = L.latLngBounds(points.map((p) => L.latLng(p[0], p[1])));
-      map.fitBounds(bounds, { padding: [40, 40] });
+      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 17 });
     }
   }, [shopPos[0], shopPos[1], userPos?.[0], userPos?.[1], routeCoords?.length]);
   return null;
