@@ -213,6 +213,8 @@ const sw: Translations = {
     trustedMarketplace: "Soko la kuaminika",
     buyFromTrusted: "Nunua kutoka maduka ya kuaminika",
     buyFromTrustedSub: "Gundua bidhaa bora kutoka biashara za ndani zilizothibitishwa",
+    buyFromTrustedShort: "Nunua kutoka maduka ya kuaminika karibu nawe.",
+    nearbyShopsSubtitle: "Tazama maduka yaliyoko karibu kwenye ramani, kisha endelea chini.",
     searchPlaceholder: "Tafuta maduka au bidhaa...",
     pressEnterFullSearch: "Bonyeza Enter kwa utafutaji kamili",
     loadingShops: "Inapakia maduka…",

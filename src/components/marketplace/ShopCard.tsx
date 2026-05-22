@@ -16,6 +16,10 @@ export interface MarketplaceShop {
   theme_color: string;
   is_featured?: boolean;
   is_open?: boolean; // optional online status
+  follower_count?: number | null;
+  engagement_score?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 interface ShopCardProps {

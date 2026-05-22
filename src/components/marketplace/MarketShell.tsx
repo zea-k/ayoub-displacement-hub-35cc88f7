@@ -10,7 +10,6 @@ type Tab = "home" | "discover" | "shops" | "map" | "account";
 const navItemsBase: { id: Tab; icon: any; to: string; key: string }[] = [
   { id: "home", icon: Home, to: "/welcome", key: "market.navHome" },
   { id: "discover", icon: Compass, to: "/market/discover", key: "market.navDiscover" },
-  { id: "map", icon: MapIcon, to: "/market/map", key: "market.navMap" },
   { id: "shops", icon: Store, to: "/market", key: "market.navShops" },
   { id: "account", icon: User, to: "/account", key: "market.navAccount" },
 ];

@@ -211,6 +211,8 @@ const en = {
     trustedMarketplace: "Trusted marketplace",
     buyFromTrusted: "Buy from trusted shops",
     buyFromTrustedSub: "Discover quality products from verified local businesses",
+    buyFromTrustedShort: "Buy from trusted shops near you.",
+    nearbyShopsSubtitle: "Browse nearby shops on the map, then continue below.",
     searchPlaceholder: "Search shops or products...",
     pressEnterFullSearch: "Press Enter for full search",
     loadingShops: "Loading shops…",
