@@ -1,0 +1,1 @@
+ALTER TABLE public.stock_in ADD COLUMN IF NOT EXISTS selling_price numeric NOT NULL DEFAULT 0;
