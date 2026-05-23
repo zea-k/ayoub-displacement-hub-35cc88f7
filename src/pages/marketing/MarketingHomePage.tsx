@@ -96,33 +96,37 @@ export default function MarketingHomePage() {
       if (index > 0) {
         const previous = slideRefs.current[index - 1];
 
+        // Hard-ish swap: previous fades out fast, current fades in fast,
+        // with no overlap window — prevents text from stacking visually.
         tl.to(
           previous,
           {
             autoAlpha: 0,
-            scale: 0.97,
-            duration: 1,
+            scale: 0.98,
+            duration: 0.4,
+            ease: "power2.in",
           },
           `slide${index}`
         )
-          .set(previous, { zIndex: 1 }, `slide${index}+=0.1`)
-          .set(current, { zIndex: 5 }, `slide${index}`)
+          .set(previous, { zIndex: 1 })
+          .set(current, { zIndex: 5 })
           .fromTo(
             current,
             {
               autoAlpha: 0,
-              scale: 1.04,
-              y: 20,
+              scale: 1.02,
             },
             {
               autoAlpha: 1,
               scale: 1,
-              y: 0,
-              duration: 1,
+              duration: 0.4,
+              ease: "power2.out",
             },
-            `slide${index}`
-          );
+            `slide${index}+=0.4`
+          )
+          .to({}, { duration: 0.6 }, `slide${index}+=0.8`);
       }
+
     });
 
     return () => {
@@ -135,7 +139,7 @@ export default function MarketingHomePage() {
     <main className="min-h-screen overflow-hidden bg-gradient-to-br from-background via-background/95 to-background/90 text-foreground">
       <div ref={containerRef} className="relative h-screen">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90 backdrop-blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background" />
 
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)]" />
 
@@ -147,8 +151,9 @@ export default function MarketingHomePage() {
             ref={(el) => {
               if (el) slideRefs.current[index] = el;
             }}
-            className="absolute inset-0 flex items-center justify-center px-4 py-12"
+            className="absolute inset-0 flex items-center justify-center px-4 py-12 bg-background"
           >
+
             <div className="relative w-full max-w-5xl text-center">
               {/* Badge */}
               <motion.div
