@@ -92,30 +92,30 @@ export default function MarketDiscoverPage() {
   return (
     <MarketShell active="discover">
       <div className="relative apple-surface">
-        {/* Ambient washes echoing dashboard primary + accent */}
+        {/* Compact ambient washes */}
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-32 -left-24 h-[480px] w-[480px] rounded-full bg-primary/20 blur-[130px]" />
-          <div className="absolute top-20 right-0 h-[360px] w-[360px] rounded-full bg-accent/15 blur-[110px]" />
+          <div className="absolute -top-16 -left-12 h-[280px] w-[280px] rounded-full bg-primary/15 blur-[90px]" />
+          <div className="absolute top-8 right-0 h-[200px] w-[200px] rounded-full bg-accent/12 blur-[70px]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-8 sm:pt-12 scroll-smooth">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-6 sm:pt-8 scroll-smooth">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="relative mb-10"
+            className="relative mb-6"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card/70 border border-primary/30 text-primary text-xs sm:text-sm font-semibold mb-5 backdrop-blur-md shadow-sm">
-              <Sparkles className="h-4 w-4" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/70 border border-primary/30 text-primary text-xs font-semibold mb-3 backdrop-blur-md shadow-sm">
+              <Sparkles className="h-3.5 w-3.5" />
               {personalizedLabel}
             </div>
-            <h1 className="font-heading text-3xl sm:text-5xl font-bold mb-3 leading-[1.05] tracking-tight text-foreground text-balance-heading">
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold mb-2 leading-tight tracking-tight text-foreground text-balance-heading">
               {t("market.discoverTitle")}{" "}
               <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
                 {t("market.discoverTitleAccent")}
               </span>
             </h1>
-            <p className="text-muted-foreground max-w-2xl text-base sm:text-lg leading-relaxed">
+            <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
               {user ? t("market.discoverSubtitleSignedIn") : t("market.discoverSubtitleGuest")}
             </p>
           </motion.div>
