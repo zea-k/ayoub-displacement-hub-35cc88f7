@@ -262,7 +262,9 @@ export default function MarketingHomePage() {
             </motion.div>
           ))}
         </div>
+        </div>
       </div>
     </main>
+
   );
 }
