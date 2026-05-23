@@ -139,7 +139,7 @@ export default function MarketingHomePage() {
     <main className="min-h-screen overflow-hidden bg-gradient-to-br from-background via-background/95 to-background/90 text-foreground">
       <div ref={containerRef} className="relative h-screen">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/90 backdrop-blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background" />
 
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(120,119,198,0.1),transparent_50%)]" />
 
@@ -151,8 +151,9 @@ export default function MarketingHomePage() {
             ref={(el) => {
               if (el) slideRefs.current[index] = el;
             }}
-            className="absolute inset-0 flex items-center justify-center px-4 py-12"
+            className="absolute inset-0 flex items-center justify-center px-4 py-12 bg-background"
           >
+
             <div className="relative w-full max-w-5xl text-center">
               {/* Badge */}
               <motion.div
