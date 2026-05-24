@@ -7,7 +7,7 @@ export default function MarketingFooter() {
 
   const footerLinks = {
     [t("marketing.footer.product")]: [
-      { label: t("nav.features"), to: "/features" },
+      
       { label: t("nav.pricing"), to: "/plans" },
       { label: t("nav.howItWorks"), to: "/how-it-works" },
     ],

@@ -15,7 +15,7 @@ export default function MarketingNavbar() {
   const links = [
     { to: "/welcome", label: t("nav.home") },
     { to: "/market", label: t("nav.marketplace") },
-    { to: "/features", label: t("nav.features") },
+    
     { to: "/how-it-works", label: t("nav.howItWorks") },
     { to: "/plans", label: t("nav.pricing") },
     { to: "/contact", label: t("nav.contact") },
