@@ -340,6 +340,8 @@ export default function AccountPage() {
                   </div>
                 </motion.div>
               )}
+
+              <ChangePasswordCard />
             </TabsContent>
 
             <TabsContent value="track" className="mt-8">
