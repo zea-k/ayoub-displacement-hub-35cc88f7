@@ -18,6 +18,7 @@ import { PublicStoreOrderTracking } from "@/components/public-store/PublicStoreO
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { motion } from "framer-motion";
 import ShopRouteMap from "@/components/map/ShopRouteMap";
+import { PremiumFrame } from "@/components/ui/premium-frame";
 
 export interface StoreSettings {
   owner_id: string;
@@ -264,8 +265,8 @@ export default function PublicStorePage() {
 
   return (
     <div className="min-h-screen bg-background p-2 sm:p-3 lg:p-4">
-      <div className="relative rounded-[1.75rem] p-[1.5px] bg-[conic-gradient(from_140deg_at_50%_50%,hsl(var(--primary)/0.55),hsl(var(--accent)/0.45),hsl(var(--primary)/0.15),hsl(var(--accent)/0.5),hsl(var(--primary)/0.55))] shadow-[0_30px_80px_-30px_hsl(var(--primary)/0.45),0_10px_40px_-20px_hsl(var(--accent)/0.35)]">
-        <div className="relative overflow-hidden rounded-[1.65rem] ring-1 ring-white/10 bg-gradient-to-br from-background via-background/95 to-background/90 text-foreground">
+      <PremiumFrame innerClassName="bg-gradient-to-br from-background via-background/95 to-background/90 text-foreground">
+
 
       {/* Premium Background Effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -391,7 +392,7 @@ export default function PublicStorePage() {
         />
       )}
         </div>
-      </div>
+      </PremiumFrame>
     </div>
   );
 
