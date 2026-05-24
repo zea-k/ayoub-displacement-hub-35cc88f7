@@ -476,3 +476,124 @@ function EmptyOrders({ message }: { message: string }) {
     </div>
   );
 }
+
+function ChangePasswordCard() {
+  const [current, setCurrent] = useState("");
+  const [next, setNext] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNext, setShowNext] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!next || next !== confirm) {
+      toast.error("Password mpya hazifanani");
+      return;
+    }
+    if (!user?.email) {
+      toast.error("Hauja-ingia");
+      return;
+    }
+    setLoading(true);
+    try {
+      // Re-authenticate with current password
+      const { error: signInErr } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: current,
+      });
+      if (signInErr) {
+        toast.error("Password ya sasa si sahihi");
+        return;
+      }
+      const { error } = await supabase.auth.updateUser({ password: next });
+      if (error) throw error;
+      toast.success("Password imebadilishwa");
+      setCurrent(""); setNext(""); setConfirm("");
+    } catch (err: any) {
+      toast.error(err?.message || "Imeshindikana kubadilisha password");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <motion.form
+      onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      className="relative rounded-3xl border border-border/50 bg-gradient-to-br from-card/90 via-card/70 to-card/50 backdrop-blur-2xl p-8 space-y-5 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.2)] mt-6"
+    >
+      <div className="flex items-center gap-3 pb-2 border-b border-border/40">
+        <div className="p-2 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+          <Lock className="h-5 w-5 text-primary" />
+        </div>
+        <div>
+          <h3 className="font-semibold text-foreground">Badilisha Password</h3>
+          <p className="text-xs text-muted-foreground">Sasisha password yako kwa usalama</p>
+        </div>
+      </div>
+
+      <PasswordField
+        label="Password ya Sasa"
+        value={current}
+        onChange={setCurrent}
+        show={showCurrent}
+        onToggle={() => setShowCurrent((s) => !s)}
+      />
+      <PasswordField
+        label="Password Mpya"
+        value={next}
+        onChange={setNext}
+        show={showNext}
+        onToggle={() => setShowNext((s) => !s)}
+      />
+      <PasswordField
+        label="Thibitisha Password Mpya"
+        value={confirm}
+        onChange={setConfirm}
+        show={showNext}
+        onToggle={() => setShowNext((s) => !s)}
+      />
+
+      <Button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-xl font-semibold shadow-lg shadow-primary/30"
+      >
+        {loading ? "Inabadilisha..." : "Badilisha Password"}
+      </Button>
+    </motion.form>
+  );
+}
+
+function PasswordField({
+  label, value, onChange, show, onToggle,
+}: { label: string; value: string; onChange: (v: string) => void; show: boolean; onToggle: () => void }) {
+  return (
+    <div>
+      <Label className="text-foreground font-semibold text-sm mb-2 block">{label}</Label>
+      <div className="relative">
+        <Input
+          type={show ? "text" : "password"}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          className="bg-card/80 border-border/50 focus:border-primary text-foreground rounded-xl pr-12"
+          placeholder="••••••••"
+        />
+        <button
+          type="button"
+          onClick={onToggle}
+          tabIndex={-1}
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          aria-label={show ? "Ficha" : "Onyesha"}
+        >
+          {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+    </div>
+  );
+}
