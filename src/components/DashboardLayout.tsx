@@ -6,6 +6,7 @@ import PageTransition from "@/components/PageTransition";
 import ParallaxBrand from "@/components/ParallaxBrand";
 import { DashboardBottomNav } from "@/components/DashboardBottomNav";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { PremiumFrame } from "@/components/ui/premium-frame";
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
@@ -25,10 +26,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <NotificationBell />
             </div>
           </header>
-          <div className="p-4 md:p-6 pb-24 md:pb-6">
-            <PageTransition>
-              {children ?? <Outlet />}
-            </PageTransition>
+          <div className="p-2 sm:p-3 lg:p-4 pb-24 md:pb-6">
+            <PremiumFrame innerClassName="bg-background min-h-[calc(100vh-6rem)]">
+              <div className="p-4 md:p-6">
+                <PageTransition>
+                  {children ?? <Outlet />}
+                </PageTransition>
+              </div>
+            </PremiumFrame>
           </div>
         </main>
         <DashboardBottomNav />

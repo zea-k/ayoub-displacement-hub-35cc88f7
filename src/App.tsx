@@ -29,7 +29,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import NotFound from "./pages/NotFound";
 import MarketingLayout from "./components/marketing/MarketingLayout";
 import MarketingHomePage from "./pages/marketing/MarketingHomePage";
-import MarketingFeaturesPage from "./pages/marketing/MarketingFeaturesPage";
+
 import MarketingHowItWorksPage from "./pages/marketing/MarketingHowItWorksPage";
 import MarketingPricingPage from "./pages/marketing/MarketingPricingPage";
 import MarketingContactPage from "./pages/marketing/MarketingContactPage";
@@ -65,7 +65,7 @@ const App = () => (
               {/* Marketing pages */}
               <Route element={<MarketingLayout />}>
                 <Route path="/welcome" element={<MarketingHomePage />} />
-                <Route path="/features" element={<MarketingFeaturesPage />} />
+                <Route path="/features" element={<Navigate to="/welcome" replace />} />
                 <Route path="/how-it-works" element={<MarketingHowItWorksPage />} />
                 <Route path="/plans" element={<MarketingPricingPage />} />
                 <Route path="/contact" element={<MarketingContactPage />} />
