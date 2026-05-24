@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { User as UserIcon, Package, Phone, Mail, LogOut, ArrowRight, Search, Store, Clock, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+import { User as UserIcon, Package, Phone, Mail, LogOut, ArrowRight, Search, Store, Clock, CheckCircle2, XCircle, AlertCircle, Lock, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import MarketShell from "@/components/marketplace/MarketShell";
 
