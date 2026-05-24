@@ -391,7 +391,6 @@ export default function PublicStorePage() {
           submitting={submitting}
         />
       )}
-        </div>
       </PremiumFrame>
     </div>
   );
