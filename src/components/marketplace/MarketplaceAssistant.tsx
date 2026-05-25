@@ -126,30 +126,35 @@ export default function MarketplaceAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="fixed inset-x-2 bottom-36 z-[59] sm:inset-auto sm:bottom-40 sm:right-6 sm:w-[420px] h-[min(70vh,640px)] rounded-2xl border border-border bg-card shadow-2xl shadow-primary/20 flex flex-col overflow-hidden"
+            className="fixed inset-x-2 bottom-36 z-[59] sm:inset-auto sm:bottom-40 sm:right-6 sm:w-[420px] h-[min(70vh,640px)]"
           >
+            {/* Premium gradient border wrapper */}
+            <div className="absolute inset-0 rounded-2xl p-[1.5px] bg-gradient-to-br from-primary/60 via-primary/30 to-accent/40 pointer-events-none" />
+            
+            {/* Main chat container */}
+            <div className="relative h-full rounded-2xl bg-card/95 backdrop-blur-xl shadow-2xl shadow-primary/30 flex flex-col overflow-hidden border border-white/10">
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-gradient-to-r from-primary/10 to-accent/10">
-              <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground">
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-white/10 bg-gradient-to-r from-primary/8 via-accent/5 to-primary/8">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center text-primary-foreground shadow-lg">
                 <ShoppingBag className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-semibold leading-tight text-foreground flex items-center gap-1.5">
-                  ZEETOP Assistant
-                  <SparkleIcon className="h-3.5 w-3.5 text-primary" />
+                <div className="font-bold leading-tight text-foreground flex items-center gap-1.5 text-sm">
+                  ZEETOP AI
+                  <SparkleIcon className="h-4 w-4 text-primary" />
                 </div>
-                <div className="text-[11px] text-muted-foreground flex items-center gap-1">
+                <div className="text-[12px] text-muted-foreground flex items-center gap-1.5 mt-0.5">
                   Bilingual · Swahili & English
-                  {location && <span className="ml-1 inline-flex items-center gap-0.5 text-emerald-600"><MapPin className="h-3 w-3" />nearby on</span>}
+                  {location && <span className="ml-1 inline-flex items-center gap-0.5 text-emerald-500"><MapPin className="h-3 w-3" />nearby</span>}
                 </div>
               </div>
               {!location && locStatus !== "requesting" && (
-                <Button variant="ghost" size="icon-sm" onClick={requestLocation} title="Share location">
+                <Button variant="ghost" size="icon-sm" onClick={requestLocation} title="Share location" className="hover:bg-primary/10">
                   <MapPin className="h-4 w-4" />
                 </Button>
               )}
               {messages.length > 0 && (
-                <Button variant="ghost" size="icon-sm" onClick={clearChat} title="Clear chat">
+                <Button variant="ghost" size="icon-sm" onClick={clearChat} title="Clear chat" className="hover:bg-destructive/10">
                   <Trash2 className="h-4 w-4" />
                 </Button>
               )}
@@ -228,7 +233,7 @@ export default function MarketplaceAssistant() {
             </Conversation>
 
             {/* Composer */}
-            <div className="border-t border-border bg-background/80 backdrop-blur p-2">
+            <div className="border-t border-white/10 bg-background/80 backdrop-blur p-2">
               <PromptInput onSubmit={handleSubmit}>
                 <PromptInputTextarea
                   ref={textareaRef as any}
@@ -241,6 +246,7 @@ export default function MarketplaceAssistant() {
                   />
                 </PromptInputFooter>
               </PromptInput>
+            </div>
             </div>
           </motion.div>
         )}
