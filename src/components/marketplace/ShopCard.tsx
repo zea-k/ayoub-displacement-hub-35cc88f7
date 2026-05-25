@@ -3,6 +3,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
 
 export interface MarketplaceShop {
   owner_id: string;

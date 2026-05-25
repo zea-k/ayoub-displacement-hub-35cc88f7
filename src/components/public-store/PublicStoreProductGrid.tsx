@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MessageCircle, Send, ShoppingCart, Flame, Star, Zap, ImageOff, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { StoreSettings, PublicProduct } from "@/pages/PublicStorePage";
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
 
 interface Props {
   products: PublicProduct[];
@@ -73,7 +74,7 @@ export function PublicStoreProductGrid({ products, store, isDark, viewMode, onWh
             >
               <div className="h-20 w-20 rounded-xl overflow-hidden shrink-0">
                 {p.image_url ? (
-                  <img src={p.image_url} alt={p.name} className="h-full w-full object-cover" />
+                  <CloudinaryImage src={p.image_url} alt={p.name} width={160} fill aspect="h-full w-full" sizes="80px" />
                 ) : (
                   <div className={`h-full w-full flex items-center justify-center ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
                     <ImageOff className={`h-8 w-8 ${isDark ? "text-gray-700" : "text-gray-200"}`} />
@@ -147,8 +148,16 @@ export function PublicStoreProductGrid({ products, store, isDark, viewMode, onWh
             {/* Image */}
             {p.image_url ? (
               <div className="relative aspect-square w-full overflow-hidden">
-                <img src={p.image_url} alt={p.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? "from-gray-950/60" : "from-white/30"} to-transparent`} />
+                <CloudinaryImage
+                  src={p.image_url}
+                  alt={p.name}
+                  width={480}
+                  fill
+                  aspect="h-full w-full"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
+                  className="transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? "from-gray-950/60" : "from-white/30"} to-transparent pointer-events-none`} />
                 <div className="absolute top-2 right-2">
                   <StockBadge stock={p.stock} isDark={isDark} />
                 </div>
