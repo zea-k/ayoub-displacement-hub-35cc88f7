@@ -39,6 +39,16 @@ export default function AuthModal({ open, onOpenChange, defaultView = "login" }:
     setUserType("buyer"); setRegisterStep("type");
   };
 
+  // Whenever the modal opens, sync the active tab to whatever the caller asked for
+  // (login vs register). This makes "Sign in" buttons open the sign-in tab and
+  // "Create account / Start free trial" buttons open the sign-up tab.
+  useEffect(() => {
+    if (open) {
+      setView(defaultView);
+      setRegisterStep("type");
+    }
+  }, [open, defaultView]);
+
   const handleOpenChange = (val: boolean) => {
     if (val) {
       setView(defaultView);
