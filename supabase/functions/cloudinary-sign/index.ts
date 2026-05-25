@@ -1,8 +1,9 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
-const CLOUD_NAME = Deno.env.get('CLOUDINARY_CLOUD_NAME') ?? '';
-const API_KEY = Deno.env.get('CLOUDINARY_API_KEY') ?? '';
-const API_SECRET = Deno.env.get('CLOUDINARY_API_SECRET') ?? '';
+// Trim to defend against accidental whitespace/newlines when secrets were pasted.
+const CLOUD_NAME = (Deno.env.get('CLOUDINARY_CLOUD_NAME') ?? '').trim();
+const API_KEY = (Deno.env.get('CLOUDINARY_API_KEY') ?? '').trim();
+const API_SECRET = (Deno.env.get('CLOUDINARY_API_SECRET') ?? '').trim();
 
 const ALLOWED_FOLDERS = new Set([
   'discover-posts',
