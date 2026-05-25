@@ -56,14 +56,16 @@ export default function ProductsPage() {
 
   useEffect(() => { fetchProducts(); }, [user]);
 
-  const uploadImage = async (productId: string): Promise<string | null> => {
+  const uploadImage = async (_productId: string): Promise<string | null> => {
     if (!imageFile || !user) return existingImageUrl;
-    const ext = imageFile.name.split('.').pop();
-    const path = `${user.id}/${productId}.${ext}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, imageFile, { upsert: true });
-    if (error) { toast.error("Image upload failed"); return existingImageUrl; }
-    const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(path);
-    return urlData.publicUrl;
+    try {
+      const { uploadToCloudinary } = await import("@/lib/cloudinary");
+      const res = await uploadToCloudinary(imageFile, "store-products");
+      return res.secure_url;
+    } catch (e: any) {
+      toast.error(e?.message || "Image upload failed");
+      return existingImageUrl;
+    }
   };
 
   const handleSave = async () => {

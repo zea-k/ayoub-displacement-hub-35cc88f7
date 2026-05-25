@@ -98,14 +98,11 @@ export default function ProductStoriesPage() {
       setLoading(true);
       let imageUrl = editingStory?.imageUrl;
 
-      // Upload image if new
+      // Upload image if new (to Cloudinary)
       if (formData.imageFile) {
-        const timestamp = Date.now();
-        const path = `product-stories/${user.id}/${timestamp}-${formData.imageFile.name}`;
-        const { error: uploadError } = await supabase.storage.from("media").upload(path, formData.imageFile);
-        if (uploadError) throw uploadError;
-        const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
-        imageUrl = urlData.publicUrl;
+        const { uploadToCloudinary } = await import("@/lib/cloudinary");
+        const res = await uploadToCloudinary(formData.imageFile, "product-stories");
+        imageUrl = res.secure_url;
       }
 
       if (editingStory) {

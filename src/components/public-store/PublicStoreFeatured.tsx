@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Crown, ShoppingCart, ImageOff, Flame, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { StoreSettings, PublicProduct } from "@/pages/PublicStorePage";
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
 
 interface Props {
   products: PublicProduct[];
@@ -78,10 +79,14 @@ export function PublicStoreFeatured({ products, store, isDark, onAddToCart, onVi
             {/* Image */}
             <div className="relative aspect-square overflow-hidden">
               {p.image_url ? (
-                <img
+                <CloudinaryImage
                   src={p.image_url}
                   alt={p.name}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  width={640}
+                  fill
+                  aspect="h-full w-full"
+                  sizes="(max-width: 640px) 50vw, 320px"
+                  className="transition-transform duration-500 group-hover:scale-110"
                 />
               ) : (
                 <div className={`h-full w-full flex items-center justify-center ${isDark ? "bg-white/5" : "bg-gray-50"}`}>

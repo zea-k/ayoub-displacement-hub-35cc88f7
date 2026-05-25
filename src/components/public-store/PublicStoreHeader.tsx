@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MessageCircle, Phone, Mail, Sparkles, Store, PackageSearch } from "lucide-react";
 import BackButton from "@/components/marketplace/BackButton";
 import type { StoreSettings } from "@/pages/PublicStorePage";
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
 
 interface Props {
   store: StoreSettings;
@@ -39,11 +40,17 @@ export function PublicStoreHeader({ store, isDark, productCount, onTrackOrder }:
                   className="absolute inset-0 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"
                   style={{ backgroundColor: store.theme_color }}
                 />
-                <img
+                <CloudinaryImage
                   src={store.logo_url}
                   alt={store.business_name}
-                  className="relative h-20 w-20 md:h-24 md:w-24 rounded-2xl object-cover ring-2 ring-gray-200 shadow-xl"
+                  width={240}
+                  fill
+                  aspect="h-20 w-20 md:h-24 md:w-24"
+                  rounded="rounded-2xl"
+                  sizes="96px"
+                  className="relative ring-2 ring-gray-200 shadow-xl"
                 />
+
               </motion.div>
             ) : (
               <motion.div

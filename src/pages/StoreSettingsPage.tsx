@@ -190,18 +190,16 @@ export default function StoreSettingsPage() {
     const file = e.target.files?.[0];
     if (!file || !user) return;
     setUploading(true);
-    const ext = file.name.split(".").pop();
-    const path = `${user.id}/logo.${ext}`;
-    const { error } = await supabase.storage.from("logos").upload(path, file, { upsert: true });
-    if (error) {
-      toast.error(error.message);
+    try {
+      const { uploadToCloudinary } = await import("@/lib/cloudinary");
+      const res = await uploadToCloudinary(file, "profile-images");
+      setSettings((s) => ({ ...s, logo_url: res.secure_url }));
+      toast.success("Logo uploaded!");
+    } catch (e: any) {
+      toast.error(e?.message || "Upload failed");
+    } finally {
       setUploading(false);
-      return;
     }
-    const { data: urlData } = supabase.storage.from("logos").getPublicUrl(path);
-    setSettings((s) => ({ ...s, logo_url: urlData.publicUrl }));
-    setUploading(false);
-    toast.success("Logo uploaded!");
   };
 
   const addBanner = async () => {
@@ -544,14 +542,16 @@ function BannerEditor({ banner, onChange, onDelete, userId }: BannerEditorProps)
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) { toast.error("Image must be less than 5MB"); return; }
     setUploading(true);
-    const ext = file.name.split(".").pop();
-    const path = `${userId}/banner-${banner.id}-${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from("media").upload(path, file, { upsert: true });
-    if (error) { toast.error(error.message); setUploading(false); return; }
-    const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
-    onChange({ image_url: urlData.publicUrl });
-    setUploading(false);
-    toast.success("Banner image uploaded");
+    try {
+      const { uploadToCloudinary } = await import("@/lib/cloudinary");
+      const res = await uploadToCloudinary(file, "banners");
+      onChange({ image_url: res.secure_url });
+      toast.success("Banner image uploaded");
+    } catch (e: any) {
+      toast.error(e?.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (

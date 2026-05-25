@@ -3,6 +3,7 @@ import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CloudinaryImage } from "@/components/ui/CloudinaryImage";
 
 export interface MarketplaceShop {
   owner_id: string;
@@ -134,11 +135,13 @@ export default function ShopCard({ shop, featured, onClick, variant = "grid" }: 
               style={{ backgroundColor: avatarBg }}
             >
               {shop.logo_url ? (
-                <img
+                <CloudinaryImage
                   src={shop.logo_url}
                   alt={shop.business_name}
-                  loading="lazy"
-                  className="h-full w-full object-cover"
+                  width={160}
+                  fill
+                  aspect="h-full w-full"
+                  sizes="80px"
                 />
               ) : (
                 <span style={{ color: accentColor }}>
