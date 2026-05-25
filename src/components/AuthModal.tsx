@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,16 @@ export default function AuthModal({ open, onOpenChange, defaultView = "login" }:
     setName(""); setPhone(""); setPassword(""); setShowPassword(false);
     setUserType("buyer"); setRegisterStep("type");
   };
+
+  // Whenever the modal opens, sync the active tab to whatever the caller asked for
+  // (login vs register). This makes "Sign in" buttons open the sign-in tab and
+  // "Create account / Start free trial" buttons open the sign-up tab.
+  useEffect(() => {
+    if (open) {
+      setView(defaultView);
+      setRegisterStep("type");
+    }
+  }, [open, defaultView]);
 
   const handleOpenChange = (val: boolean) => {
     if (val) {
