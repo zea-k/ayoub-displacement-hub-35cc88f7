@@ -225,26 +225,27 @@ export default function AccountPage() {
           </>
         ) : (
           <Tabs defaultValue="orders">
-            <TabsList className="bg-gradient-to-r from-card/80 via-card/60 to-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-1.5 shadow-xl mb-8">
+            <TabsList className="flex w-full overflow-x-auto no-scrollbar gap-1 bg-gradient-to-r from-card/80 via-card/60 to-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-1.5 shadow-xl mb-8 sm:justify-start">
               <TabsTrigger
                 value="orders"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-6 py-3"
+                className="shrink-0 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm"
               >
-                <Package className="h-4 w-4 mr-2" /> My Orders
+                <Package className="h-4 w-4 mr-1.5 sm:mr-2" /> Orders
               </TabsTrigger>
               <TabsTrigger
                 value="profile"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-6 py-3"
+                className="shrink-0 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm"
               >
-                <UserIcon className="h-4 w-4 mr-2" /> Profile
+                <UserIcon className="h-4 w-4 mr-1.5 sm:mr-2" /> Profile
               </TabsTrigger>
               <TabsTrigger
                 value="track"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-6 py-3"
+                className="shrink-0 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm"
               >
-                <Search className="h-4 w-4 mr-2" /> Track by Phone
+                <Search className="h-4 w-4 mr-1.5 sm:mr-2" /> Track
               </TabsTrigger>
             </TabsList>
+
 
             <TabsContent value="orders" className="mt-8">
               {ordersLoading ? (
