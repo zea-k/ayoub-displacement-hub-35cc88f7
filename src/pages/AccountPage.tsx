@@ -318,27 +318,28 @@ export default function AccountPage() {
                         className="bg-card/80 border-border/50 focus:border-primary text-foreground rounded-xl placeholder-muted-foreground backdrop-blur-sm"
                       />
                     </div>
-                    <div className="flex gap-3 pt-6 border-t border-border/50">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border/50">
                       <Button
                         onClick={saveProfile}
-                        className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-xl font-semibold px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
+                        className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-xl font-semibold px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 w-full sm:w-auto"
                       >
                         Save Changes
                       </Button>
                       {!isBuyer && (
-                        <Link to="/dashboard">
-                          <Button className="border border-border/50 bg-card/80 hover:bg-card backdrop-blur-sm text-foreground hover:text-primary rounded-xl font-semibold px-6 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <Link to="/dashboard" className="w-full sm:w-auto">
+                          <Button className="border border-border/50 bg-card/80 hover:bg-card backdrop-blur-sm text-foreground hover:text-primary rounded-xl font-semibold px-6 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto">
                             Go to Dashboard
                           </Button>
                         </Link>
                       )}
                       <Button
                         onClick={signOut}
-                        className="text-destructive hover:bg-destructive/10 border border-destructive/20 rounded-xl font-semibold px-6 ml-auto transition-all duration-300 shadow-lg hover:shadow-xl"
+                        className="text-destructive hover:bg-destructive/10 border border-destructive/20 rounded-xl font-semibold px-6 sm:ml-auto transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto"
                       >
                         <LogOut className="h-4 w-4 mr-2" /> Sign Out
                       </Button>
                     </div>
+
                   </div>
                 </motion.div>
               )}
