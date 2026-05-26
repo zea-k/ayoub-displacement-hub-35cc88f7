@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import zeetopLogo from "@/assets/zeetop-logo.png";
 import { PremiumFrame } from "@/components/ui/premium-frame";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAuthModal } from "@/contexts/AuthModalContext";
+import { Button } from "@/components/ui/button";
 
 
 
@@ -19,14 +22,39 @@ const navItemsBase: { id: Tab; icon: any; to: string; key: string }[] = [
 interface MarketShellProps {
   active: Tab;
   children: React.ReactNode;
+  /** Where to place the guest auth buttons in the header. Defaults to "right". */
+  authButtonsAlign?: "left" | "right";
 }
 
 /**
  * Shared shell for marketplace-related pages.
  * Provides the header and the persistent mobile bottom nav.
  */
-export default function MarketShell({ active, children }: MarketShellProps) {
+export default function MarketShell({ active, children, authButtonsAlign = "right" }: MarketShellProps) {
   const { t } = useTranslation();
+  const { user, loading } = useAuth();
+  const { openLogin, openRegister } = useAuthModal();
+
+  const authButtons = !loading && !user ? (
+    <div className="flex items-center gap-2">
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={openLogin}
+        className="h-9 rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold border-gray-300 text-gray-900 hover:bg-gray-50"
+      >
+        Sign in
+      </Button>
+      <Button
+        size="sm"
+        onClick={openRegister}
+        className="h-9 rounded-full px-3 sm:px-4 text-xs sm:text-sm font-semibold bg-gradient-to-r from-primary to-accent text-white shadow-md hover:opacity-95"
+      >
+        Sign up
+      </Button>
+    </div>
+  ) : null;
+
   return (
     <div className="min-h-screen bg-background p-2 sm:p-3 lg:p-4 pb-20">
       <PremiumFrame innerClassName="bg-white text-gray-900">
@@ -39,17 +67,27 @@ export default function MarketShell({ active, children }: MarketShellProps) {
         {/* Header */}
         <header className="relative z-10 border-b border-gray-200/70 bg-white/80 backdrop-blur-xl">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 sm:h-20">
-              <Link to="/welcome" className="flex items-center gap-3">
+            <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
+              {authButtonsAlign === "left" && authButtons && (
+                <div className="order-1">{authButtons}</div>
+              )}
+              <Link
+                to="/welcome"
+                className={`flex items-center gap-3 ${authButtonsAlign === "left" ? "order-2 mx-auto sm:mx-0" : "order-1"}`}
+              >
                 <img src={zeetopLogo} alt="ZEETOP" className="h-10 sm:h-12 w-auto" />
                 <div className="hidden sm:flex flex-col">
                   <span className="text-lg font-bold tracking-tight leading-tight text-gray-900">ZEETOP</span>
                   <span className="text-[10px] font-medium text-primary tracking-widest uppercase">Marketplace</span>
                 </div>
               </Link>
+              {authButtonsAlign === "right" && authButtons && (
+                <div className="order-3 ml-auto">{authButtons}</div>
+              )}
             </div>
           </div>
         </header>
+
 
         <main className="relative z-10">{children}</main>
       </PremiumFrame>
