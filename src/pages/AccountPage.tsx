@@ -225,26 +225,27 @@ export default function AccountPage() {
           </>
         ) : (
           <Tabs defaultValue="orders">
-            <TabsList className="bg-gradient-to-r from-card/80 via-card/60 to-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-1.5 shadow-xl mb-8">
+            <TabsList className="flex w-full overflow-x-auto no-scrollbar gap-1 bg-gradient-to-r from-card/80 via-card/60 to-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-1.5 shadow-xl mb-8 sm:justify-start">
               <TabsTrigger
                 value="orders"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-6 py-3"
+                className="shrink-0 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm"
               >
-                <Package className="h-4 w-4 mr-2" /> My Orders
+                <Package className="h-4 w-4 mr-1.5 sm:mr-2" /> Orders
               </TabsTrigger>
               <TabsTrigger
                 value="profile"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-6 py-3"
+                className="shrink-0 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm"
               >
-                <UserIcon className="h-4 w-4 mr-2" /> Profile
+                <UserIcon className="h-4 w-4 mr-1.5 sm:mr-2" /> Profile
               </TabsTrigger>
               <TabsTrigger
                 value="track"
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-6 py-3"
+                className="shrink-0 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl text-muted-foreground data-[state=active]:text-white font-semibold transition-all duration-300 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm"
               >
-                <Search className="h-4 w-4 mr-2" /> Track by Phone
+                <Search className="h-4 w-4 mr-1.5 sm:mr-2" /> Track
               </TabsTrigger>
             </TabsList>
+
 
             <TabsContent value="orders" className="mt-8">
               {ordersLoading ? (
@@ -266,8 +267,9 @@ export default function AccountPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="relative rounded-3xl border border-border/50 bg-gradient-to-br from-card/90 via-card/70 to-card/50 backdrop-blur-2xl p-8 space-y-6 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.2)]"
+                  className="relative rounded-3xl border border-border/50 bg-gradient-to-br from-card/90 via-card/70 to-card/50 backdrop-blur-2xl p-4 sm:p-8 space-y-6 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.2)]"
                 >
+
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 opacity-50" />
                   <div className="relative">
                     <div>
@@ -316,27 +318,28 @@ export default function AccountPage() {
                         className="bg-card/80 border-border/50 focus:border-primary text-foreground rounded-xl placeholder-muted-foreground backdrop-blur-sm"
                       />
                     </div>
-                    <div className="flex gap-3 pt-6 border-t border-border/50">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border/50">
                       <Button
                         onClick={saveProfile}
-                        className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-xl font-semibold px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
+                        className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white rounded-xl font-semibold px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 w-full sm:w-auto"
                       >
                         Save Changes
                       </Button>
                       {!isBuyer && (
-                        <Link to="/dashboard">
-                          <Button className="border border-border/50 bg-card/80 hover:bg-card backdrop-blur-sm text-foreground hover:text-primary rounded-xl font-semibold px-6 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <Link to="/dashboard" className="w-full sm:w-auto">
+                          <Button className="border border-border/50 bg-card/80 hover:bg-card backdrop-blur-sm text-foreground hover:text-primary rounded-xl font-semibold px-6 transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto">
                             Go to Dashboard
                           </Button>
                         </Link>
                       )}
                       <Button
                         onClick={signOut}
-                        className="text-destructive hover:bg-destructive/10 border border-destructive/20 rounded-xl font-semibold px-6 ml-auto transition-all duration-300 shadow-lg hover:shadow-xl"
+                        className="text-destructive hover:bg-destructive/10 border border-destructive/20 rounded-xl font-semibold px-6 sm:ml-auto transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-auto"
                       >
                         <LogOut className="h-4 w-4 mr-2" /> Sign Out
                       </Button>
                     </div>
+
                   </div>
                 </motion.div>
               )}

@@ -154,18 +154,9 @@ export default function MarketplaceAssistant() {
                 <ShoppingBag className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <div className="font-bold leading-tight text-foreground flex items-center gap-1.5 text-sm">
-                    ZEETOP AI
-                    <SparkleIcon className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="ml-3 text-xs text-muted-foreground bg-white/5 px-2 py-1 rounded-md border border-white/6">
-                    ID: <span className="font-medium text-foreground">{assistantId}</span>
-                  </div>
-                </div>
-                <div className="text-[12px] text-muted-foreground flex items-center gap-1.5 mt-1">
-                  Bilingual · Swahili & English
-                  {location && <span className="ml-1 inline-flex items-center gap-0.5 text-emerald-500"><MapPin className="h-3 w-3" />nearby</span>}
+                <div className="font-bold leading-tight text-foreground flex items-center gap-1.5 text-sm">
+                  ZEETOP AI
+                  <SparkleIcon className="h-4 w-4 text-primary" />
                 </div>
               </div>
               {!location && locStatus !== "requesting" && (
@@ -180,40 +171,7 @@ export default function MarketplaceAssistant() {
               )}
             </div>
 
-            {/* Assistant stats strip */}
-            <div className="px-4 py-3 border-b border-white/6 bg-gradient-to-t from-black/2 to-transparent">
-              <div className="flex items-center gap-3">
-                <div className="flex-1 flex items-center gap-3">
-                  <div className="rounded-md bg-card/60 px-3 py-2 border border-white/6">
-                    <div className="text-[10px] text-muted-foreground">Messages</div>
-                    <div className="text-sm font-semibold text-foreground">{messages.length}</div>
-                  </div>
-                  <div className="rounded-md bg-card/60 px-3 py-2 border border-white/6">
-                    <div className="text-[10px] text-muted-foreground">Responses</div>
-                    <div className="text-sm font-semibold text-foreground">{messages.filter((m) => m.role === "assistant").length}</div>
-                  </div>
-                  <div className="flex-1 rounded-md bg-card/60 px-3 py-2 border border-white/6 flex items-center justify-between">
-                    <div>
-                      <div className="text-[10px] text-muted-foreground">Activity</div>
-                      <div className="text-sm font-semibold text-foreground">Recent activity</div>
-                    </div>
-                    <div className="w-28 h-8">
-                      <svg viewBox="0 0 28 8" preserveAspectRatio="none" className="w-full h-full">
-                        {(() => {
-                          const max = Math.max(...sparkData, 1);
-                          return sparkData.map((v, i) => {
-                            const x = (i / (sparkData.length - 1 || 1)) * 28;
-                            const y = 8 - (v / max) * 7;
-                            return <circle key={i} cx={x} cy={y} r={0.9} fill="rgba(96,165,250,0.9)" />;
-                          });
-                        })()}
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-xs text-muted-foreground">Tip: try "Bidhaa zinazotrend"</div>
-              </div>
-            </div>
+
 
 
             {/* Conversation */}
