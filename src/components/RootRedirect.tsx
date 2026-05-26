@@ -20,7 +20,7 @@ export default function RootRedirect() {
     );
   }
 
-  if (!user) return <Navigate to="/welcome" replace />;
+  if (!user) return <Navigate to="/market/discover" replace />;
 
   // Buyers go to the marketplace, not the business dashboard
   if (userProfile?.user_type === "buyer") {
