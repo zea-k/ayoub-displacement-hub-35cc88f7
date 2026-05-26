@@ -103,7 +103,7 @@ export default function PublicStorePage() {
       const branded = {
         ...settings,
         theme: "light",
-        theme_color: "#7c3aed", // violet-600
+        theme_color: "#eead69", // violet-600
       } as StoreSettings;
       setStore(branded);
 

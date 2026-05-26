@@ -46,7 +46,7 @@ export default function MarketMapPage() {
       const { data } = await supabase
         .from("public_settings")
         .select(
-          "business_name, slug, description, category, latitude, longitude, address, follower_count, engagement_score",
+          "business_name, slug, description, category, latitude, longitude, address, follower_count, engagement_score, is_featured",
         )
         .eq("is_public_enabled", true)
         .eq("is_listed", true)
@@ -135,6 +135,7 @@ export default function MarketMapPage() {
                 name: s.business_name,
                 lat: s.latitude,
                 lng: s.longitude,
+
               }))}
             />
           </Suspense>

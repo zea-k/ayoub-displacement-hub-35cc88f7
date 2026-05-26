@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import L from "leaflet";
 import { shopIcon, userIcon } from "./leaflet-setup";
 
 interface NearbyShop {
