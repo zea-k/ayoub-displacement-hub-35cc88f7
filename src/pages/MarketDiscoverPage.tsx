@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
@@ -40,7 +40,7 @@ export default function MarketDiscoverPage() {
     const load = async () => {
       setLoading(true);
 
-      // Fetch products and shops in parallel — show as soon as they arrive.
+      // Fetch products and shops in parallel
       const [{ data: products }, { data: shops }] = await Promise.all([
         supabase
           .from("products")
@@ -59,6 +59,7 @@ export default function MarketDiscoverPage() {
       ]);
 
       if (cancelled) return;
+
       const shopMap = new Map<string, any>((shops || []).map((s: any) => [s.owner_id as string, s]));
       const baseProducts = products || [];
 
@@ -92,35 +93,45 @@ export default function MarketDiscoverPage() {
   return (
     <MarketShell active="discover">
       <div className="relative apple-surface">
-        {/* Compact ambient washes */}
+        {/* Premium ambient gradients */}
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-16 -left-12 h-[280px] w-[280px] rounded-full bg-primary/15 blur-[90px]" />
-          <div className="absolute top-8 right-0 h-[200px] w-[200px] rounded-full bg-accent/12 blur-[70px]" />
+          <div className="absolute -top-20 -left-16 h-[320px] w-[320px] rounded-full bg-primary/15 blur-[100px]" />
+          <div className="absolute top-8 right-0 h-[240px] w-[240px] rounded-full bg-accent/12 blur-[80px]" />
+          <div className="absolute bottom-0 left-1/2 h-[280px] w-[280px] rounded-full bg-primary/8 blur-[90px]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-6 sm:pt-8 scroll-smooth">
+        <div className="relative mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-6 sm:pt-8 scroll-smooth">
+          {/* Clean Header Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="relative mb-6"
+            className="relative mb-10 sm:mb-12"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/70 border border-primary/30 text-primary text-xs font-semibold mb-3 backdrop-blur-md shadow-sm">
               <Sparkles className="h-3.5 w-3.5" />
               {personalizedLabel}
             </div>
-            <h1 className="font-heading text-2xl sm:text-3xl font-bold mb-2 leading-tight tracking-tight text-foreground text-balance-heading">
+
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 leading-tight tracking-tight text-foreground">
               {t("market.discoverTitle")}{" "}
               <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
                 {t("market.discoverTitleAccent")}
               </span>
             </h1>
-            <p className="text-muted-foreground max-w-xl text-sm leading-relaxed">
+            <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
               {user ? t("market.discoverSubtitleSignedIn") : t("market.discoverSubtitleGuest")}
             </p>
           </motion.div>
 
-          <ProductFeed products={feed} loading={loading} />
+          {/* Product Feed */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <ProductFeed products={feed} loading={loading} />
+          </motion.div>
         </div>
       </div>
     </MarketShell>

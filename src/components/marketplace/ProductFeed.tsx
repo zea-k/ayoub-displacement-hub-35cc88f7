@@ -125,13 +125,17 @@ function FeedCard({ product, index }: { product: DiscoverProduct; index: number 
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min(index * 0.04, 0.24) }}
-      className="group relative rounded-[28px] p-[1.5px] bg-gradient-to-br from-primary/30 via-border to-accent/25 shadow-[0_24px_60px_-30px_hsl(var(--primary)/0.45)] hover:shadow-[0_30px_80px_-30px_hsl(var(--primary)/0.65)] transition-shadow duration-500"
+      className="group relative rounded-[28px] overflow-hidden shadow-[0_20px_50px_-20px_hsl(var(--primary)/0.35)] hover:shadow-[0_40px_100px_-25px_hsl(var(--primary)/0.55)] transition-all duration-500"
     >
-      <div className="relative rounded-[26px] overflow-hidden bg-card/95 backdrop-blur-xl">
+      {/* Gradient border effect */}
+      <div className="absolute inset-0 rounded-[28px] p-[1.5px] bg-gradient-to-br from-primary/40 via-border to-accent/30 pointer-events-none" />
+      
+      <div className="relative rounded-[27px] overflow-hidden bg-card/95 backdrop-blur-xl">
         {/* Header */}
-        <div className="flex items-center justify-between gap-4 p-4">
+        <div className="flex items-center justify-between gap-4 p-5 sm:p-6 border-b border-border/40">
           <div className="flex items-center gap-3 min-w-0">
-            <div
+            <motion.div
+              whileHover={{ scale: 1.08 }}
               className="relative h-12 w-12 rounded-2xl flex items-center justify-center text-sm font-bold shrink-0 ring-2 ring-background shadow-md"
               style={{
                 background: `linear-gradient(135deg, ${accent}33, ${accent}11)`,
@@ -143,60 +147,76 @@ function FeedCard({ product, index }: { product: DiscoverProduct; index: number 
                 className="absolute inset-0 rounded-2xl ring-1"
                 style={{ boxShadow: `inset 0 0 0 1px ${accent}40` }}
               />
-            </div>
+            </motion.div>
             <div className="min-w-0">
               <p className="text-sm font-semibold text-foreground truncate flex items-center gap-1">
                 {product.shop_name || "ZEETOP Shop"}
                 <BadgeCheck className="h-3.5 w-3.5 text-primary shrink-0" />
               </p>
-              <p className="text-[11px] text-muted-foreground truncate uppercase tracking-wider">
+              <p className="text-[11px] text-muted-foreground truncate uppercase tracking-wider mt-0.5">
                 {product.category || "Trending"}
               </p>
             </div>
           </div>
           <Link
             to={`/market/shop/${product.shop_slug}`}
-            className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium text-primary-foreground bg-gradient-to-r from-primary to-primary/80 shadow-sm hover:shadow-md hover:scale-[1.03] active:scale-95 transition shrink-0"
+            className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-primary-foreground bg-gradient-to-r from-primary via-primary to-primary/80 shadow-md hover:shadow-lg hover:scale-[1.05] active:scale-95 transition-all shrink-0 whitespace-nowrap"
           >
             {t("market.visit")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
-        {/* Image */}
+        {/* Image with enhanced overlays */}
         <div
-          className="relative block bg-muted cursor-pointer select-none"
+          className="relative block bg-gradient-to-br from-muted to-muted/50 cursor-pointer select-none overflow-hidden"
           onClick={handleImageTap}
         >
           {product.image_url ? (
-            <CloudinaryImage
-              src={product.image_url}
-              alt={product.name}
-              width={1080}
-              sizes="(max-width: 768px) 100vw, 640px"
-              aspect="aspect-[4/5]"
-              className="max-h-[560px] transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
-            />
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.6 }}
+              className="overflow-hidden"
+            >
+              <CloudinaryImage
+                src={product.image_url}
+                alt={product.name}
+                width={1080}
+                sizes="(max-width: 768px) 100vw, 640px"
+                aspect="aspect-[4/5]"
+                className="max-h-[560px] transition-transform duration-[1200ms] ease-out"
+              />
+            </motion.div>
           ) : (
-            <div className="flex h-72 items-center justify-center bg-muted text-muted-foreground">
-              <Store className="h-10 w-10" />
+            <div className="flex h-72 items-center justify-center bg-gradient-to-br from-muted to-muted/50 text-muted-foreground">
+              <Store className="h-12 w-12 opacity-50" />
             </div>
           )}
 
-          {/* Gradient overlays */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+          {/* Premium gradient overlays */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 via-black/20 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-          {/* Top-left price chip */}
-          <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/85 backdrop-blur px-3 py-1.5 text-xs font-bold text-foreground shadow-lg ring-1 ring-border">
-            <Sparkles className="h-3 w-3 text-primary" />
-            TZS {product.selling_price.toLocaleString()}
-          </div>
+          {/* Top-left premium price chip */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-primary/95 to-primary/85 backdrop-blur-md px-4 py-2 text-xs font-bold text-primary-foreground shadow-lg ring-1 ring-white/20"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>TZS {product.selling_price.toLocaleString()}</span>
+          </motion.div>
 
-          {/* Bottom title overlay */}
-          <div className="absolute inset-x-0 bottom-0 p-4">
-            <h3 className="text-white text-lg font-bold drop-shadow-md line-clamp-2 leading-tight">
+          {/* Bottom title and description overlay */}
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+            <h3 className="text-white text-lg sm:text-xl font-bold drop-shadow-lg line-clamp-2 leading-tight mb-1.5">
               {product.name}
             </h3>
+            {product.description && (
+              <p className="text-white/80 text-xs sm:text-sm drop-shadow-md line-clamp-1 opacity-90">
+                {product.description}
+              </p>
+            )}
           </div>
 
           {/* Heart burst on double-tap */}
@@ -215,47 +235,69 @@ function FeedCard({ product, index }: { product: DiscoverProduct; index: number 
           </AnimatePresence>
         </div>
 
-        {/* Reaction bar */}
-        <div className="flex items-center gap-5 px-4 pt-3.5">
-          <button
+        {/* Enhanced Reaction Bar */}
+        <div className="flex items-center gap-4 px-5 sm:px-6 py-4 border-t border-border/40 bg-card/50 backdrop-blur-sm">
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
             onClick={triggerLike}
-            className="flex items-center gap-1.5 text-foreground/70 hover:text-rose-500 transition active:scale-90"
+            className="flex items-center gap-2 text-foreground/70 hover:text-rose-500 transition active:scale-90 group"
           >
-            <Heart className={`h-6 w-6 transition ${liked ? "fill-rose-500 text-rose-500 scale-110" : ""}`} />
+            <div className="p-2 rounded-lg group-hover:bg-rose-500/10 transition">
+              <Heart className={`h-5 w-5 transition-all ${liked ? "fill-rose-500 text-rose-500 scale-110" : ""}`} />
+            </div>
             <span className="text-xs font-semibold tabular-nums">{counts.likes.toLocaleString()}</span>
-          </button>
-          <button
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setShowComments((s) => !s)}
-            className="flex items-center gap-1.5 text-foreground/70 hover:text-foreground transition active:scale-90"
+            className="flex items-center gap-2 text-foreground/70 hover:text-foreground transition active:scale-90 group"
           >
-            <MessageCircle className="h-6 w-6" />
+            <div className="p-2 rounded-lg group-hover:bg-foreground/10 transition">
+              <MessageCircle className="h-5 w-5 transition-all" />
+            </div>
             <span className="text-xs font-semibold tabular-nums">{counts.comments.toLocaleString()}</span>
-          </button>
+          </motion.button>
+
           <Link
             to={`/market/shop/${product.shop_slug}`}
-            className="flex items-center gap-1.5 text-foreground/70 hover:text-primary transition active:scale-90"
+            className="flex items-center gap-2 text-foreground/70 hover:text-primary transition active:scale-90 group"
           >
-            <ShoppingCart className="h-6 w-6" />
+            <div className="p-2 rounded-lg group-hover:bg-primary/10 transition">
+              <ShoppingCart className="h-5 w-5 transition-all" />
+            </div>
           </Link>
-          <button
+
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleSave}
-            className="ml-auto text-foreground/70 hover:text-accent transition active:scale-90"
+            className="ml-auto text-foreground/70 hover:text-accent transition active:scale-90 group"
           >
-            <Bookmark className={`h-6 w-6 transition ${saved ? "fill-accent text-accent scale-110" : ""}`} />
-          </button>
+            <div className="p-2 rounded-lg group-hover:bg-accent/10 transition">
+              <Bookmark className={`h-5 w-5 transition-all ${saved ? "fill-accent text-accent scale-110" : ""}`} />
+            </div>
+          </motion.button>
         </div>
 
-        {/* Body */}
+        {/* Body with enhanced description */}
         {product.description && (
-          <div className="px-4 pt-2">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="px-5 sm:px-6 py-3 border-b border-border/40"
+          >
             <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
               {product.description}
             </p>
-          </div>
+          </motion.div>
         )}
 
-        {/* Comments */}
-        <div className="px-4 pb-4 pt-2">
+        {/* Comments Section */}
+        <div className="px-5 sm:px-6 py-4">
           <button
             onClick={() => setShowComments((s) => !s)}
             className="text-xs text-muted-foreground hover:text-foreground transition"

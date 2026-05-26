@@ -27,3 +27,4 @@ dist-ssr
 vite.config.ts.timestamp*
 *.mjs.timestamp*
 node_modules
+.vercel

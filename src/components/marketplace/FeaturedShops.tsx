@@ -1,24 +1,80 @@
 import { useEffect, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
 import ShopCard, { MarketplaceShop, ShopCardSkeleton } from "./ShopCard";
 
 interface FeaturedShopsProps {
-  shops: MarketplaceShop[];
+  shops?: MarketplaceShop[];
   loading?: boolean;
-  onShopClick: (shop: MarketplaceShop) => void;
+  onShopClick?: (shop: MarketplaceShop) => void;
 }
 
 /**
  * Premium horizontal scroll with center-snap + zoom effect.
+ * Can work standalone (fetches data) or with passed props.
  * - Center card scales 1.0
  * - Side cards scale 0.88
  * - Smooth scroll-snap, no scrollbar
  */
-export default function FeaturedShops({ shops, loading, onShopClick }: FeaturedShopsProps) {
+export default function FeaturedShops({ shops: propShops, loading: propLoading, onShopClick: propOnShopClick }: FeaturedShopsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [scales, setScales] = useState<number[]>([]);
+  const [shops, setShops] = useState<MarketplaceShop[]>(propShops || []);
+  const [loading, setLoading] = useState(propLoading !== undefined ? propLoading : true);
+  const navigate = useNavigate();
   const { t } = useTranslation();
+
+  // Load featured shops if not provided as props
+  useEffect(() => {
+    if (propShops) {
+      setShops(propShops);
+      if (propLoading !== undefined) setLoading(propLoading);
+      return;
+    }
+
+    const loadFeaturedShops = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from("public_settings")
+          .select("owner_id, business_name, slug, theme_color, avatar_url, bio")
+          .eq("is_public_enabled", true)
+          .eq("is_listed", true)
+          .limit(8)
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        const formattedShops: MarketplaceShop[] = (data || []).map((item: any) => ({
+          owner_id: item.owner_id,
+          name: item.business_name,
+          slug: item.slug,
+          theme_color: item.theme_color,
+          avatar: item.avatar_url,
+          bio: item.bio,
+        }));
+
+        setShops(formattedShops);
+      } catch (error) {
+        console.error("Failed to load featured shops:", error);
+        setShops([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFeaturedShops();
+  }, [propShops, propLoading]);
+
+  const handleShopClick = (shop: MarketplaceShop) => {
+    if (propOnShopClick) {
+      propOnShopClick(shop);
+    } else {
+      navigate(`/market/shop/${shop.slug}`);
+    }
+  };
 
   useEffect(() => {
     const el = scrollerRef.current;
@@ -92,7 +148,7 @@ export default function FeaturedShops({ shops, loading, onShopClick }: FeaturedS
                   className="snap-center transition-transform duration-200 ease-out"
                   style={{ transform: `scale(${scales[i] ?? 1})`, transformOrigin: "center" }}
                 >
-                  <ShopCard shop={shop} featured variant="horizontal" onClick={() => onShopClick(shop)} />
+                  <ShopCard shop={shop} featured variant="horizontal" onClick={() => handleShopClick(shop)} />
                 </div>
               ))}
         </div>
