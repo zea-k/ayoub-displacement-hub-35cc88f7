@@ -91,7 +91,7 @@ export default function MarketDiscoverPage() {
     : t("market.trendingNow");
 
   return (
-    <MarketShell active="discover">
+    <MarketShell active="discover" authButtonsAlign="left">
       <div className="relative apple-surface">
         {/* Premium ambient gradients */}
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
