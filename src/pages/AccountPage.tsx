@@ -267,8 +267,9 @@ export default function AccountPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="relative rounded-3xl border border-border/50 bg-gradient-to-br from-card/90 via-card/70 to-card/50 backdrop-blur-2xl p-8 space-y-6 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.2)]"
+                  className="relative rounded-3xl border border-border/50 bg-gradient-to-br from-card/90 via-card/70 to-card/50 backdrop-blur-2xl p-4 sm:p-8 space-y-6 shadow-[0_25px_80px_-20px_rgba(0,0,0,0.2)]"
                 >
+
                   <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 opacity-50" />
                   <div className="relative">
                     <div>
