@@ -65,7 +65,7 @@ export default function MapboxBase({
       initialViewState={initial}
       mapStyle={mapStyle}
       style={{ width: "100%", height: "100%" }}
-      attributionControl={{ compact: true }}
+      attributionControl={true}
       reuseMaps
       onLoad={(e) => {
         // Enable 3D buildings layer on style load.
