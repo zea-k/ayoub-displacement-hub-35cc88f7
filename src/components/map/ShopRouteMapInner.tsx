@@ -1,58 +1,117 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
-import L from "leaflet";
-import { shopIcon, userIcon } from "./leaflet-setup";
+import { useEffect, useMemo } from "react";
+import { Marker, Popup, Source, Layer, useMap } from "react-map-gl/mapbox";
+import { useState } from "react";
+import MapboxBase, { ShopMarkerPin, UserMarkerDot } from "./MapboxBase";
 
 interface Props {
-  shopPos: [number, number];
-  userPos: [number, number] | null;
-  routeCoords: [number, number][] | null;
+  shopPos: [number, number]; // [lat, lng] for backward compat
+  userPos: [number, number] | null; // [lat, lng]
+  routeCoords: [number, number][] | null; // [lat, lng]
   shopName: string;
 }
 
 function FitBounds({ shopPos, userPos, routeCoords }: Omit<Props, "shopName">) {
-  const map = useMap();
+  const { current: map } = useMap();
   useEffect(() => {
-    const points: [number, number][] = routeCoords?.length
-      ? routeCoords
+    if (!map) return;
+    const pts: [number, number][] = routeCoords?.length
+      ? routeCoords.map(([lat, lng]) => [lng, lat])
       : userPos
-        ? [shopPos, userPos]
-        : [shopPos];
-    if (points.length === 1) {
-      map.setView(points[0], 18);
-    } else {
-      const bounds = L.latLngBounds(points.map((p) => L.latLng(p[0], p[1])));
-      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 17 });
+        ? [
+            [shopPos[1], shopPos[0]],
+            [userPos[1], userPos[0]],
+          ]
+        : [[shopPos[1], shopPos[0]]];
+    if (pts.length === 1) {
+      map.flyTo({ center: pts[0], zoom: 16, duration: 1000 });
+      return;
     }
-  }, [shopPos[0], shopPos[1], userPos?.[0], userPos?.[1], routeCoords?.length]);
+    const lngs = pts.map((p) => p[0]);
+    const lats = pts.map((p) => p[1]);
+    map.fitBounds(
+      [
+        [Math.min(...lngs), Math.min(...lats)],
+        [Math.max(...lngs), Math.max(...lats)],
+      ],
+      { padding: 50, duration: 1000, maxZoom: 17 },
+    );
+  }, [map, shopPos[0], shopPos[1], userPos?.[0], userPos?.[1], routeCoords?.length]);
   return null;
 }
 
 export default function ShopRouteMapInner({ shopPos, userPos, routeCoords, shopName }: Props) {
+  const [showPopup, setShowPopup] = useState(true);
+
+  const routeGeoJson = useMemo(() => {
+    if (!routeCoords || routeCoords.length < 2) return null;
+    return {
+      type: "Feature" as const,
+      properties: {},
+      geometry: {
+        type: "LineString" as const,
+        coordinates: routeCoords.map(([lat, lng]) => [lng, lat]),
+      },
+    };
+  }, [routeCoords]);
+
   return (
-    <MapContainer center={shopPos} zoom={17} scrollWheelZoom maxZoom={19} className="h-full w-full">
-      <TileLayer
-        attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        maxZoom={19}
-      />
-      <Marker position={shopPos} icon={shopIcon}>
-        <Popup>
-          <strong>{shopName}</strong>
-        </Popup>
+    <MapboxBase
+      initialViewState={{
+        longitude: shopPos[1],
+        latitude: shopPos[0],
+        zoom: 16,
+        pitch: 50,
+      }}
+    >
+      {routeGeoJson && (
+        <Source id="route" type="geojson" data={routeGeoJson}>
+          <Layer
+            id="route-glow"
+            type="line"
+            paint={{
+              "line-color": "#a78bfa",
+              "line-width": 10,
+              "line-opacity": 0.25,
+              "line-blur": 4,
+            }}
+          />
+          <Layer
+            id="route-line"
+            type="line"
+            paint={{
+              "line-color": "#7c3aed",
+              "line-width": 5,
+              "line-opacity": 0.9,
+            }}
+            layout={{ "line-cap": "round", "line-join": "round" }}
+          />
+        </Source>
+      )}
+
+      <Marker longitude={shopPos[1]} latitude={shopPos[0]} anchor="bottom" onClick={() => setShowPopup(true)}>
+        <ShopMarkerPin featured />
       </Marker>
+
+      {showPopup && (
+        <Popup
+          longitude={shopPos[1]}
+          latitude={shopPos[0]}
+          anchor="top"
+          offset={12}
+          onClose={() => setShowPopup(false)}
+          closeButton={false}
+        >
+          <strong className="text-sm">{shopName}</strong>
+        </Popup>
+      )}
+
       {userPos && (
-        <Marker position={userPos} icon={userIcon}>
-          <Popup>You are here</Popup>
+        <Marker longitude={userPos[1]} latitude={userPos[0]} anchor="center">
+          <UserMarkerDot />
         </Marker>
       )}
-      {routeCoords && routeCoords.length > 1 && (
-        <Polyline
-          positions={routeCoords}
-          pathOptions={{ color: "#7c3aed", weight: 5, opacity: 0.85 }}
-        />
-      )}
+
       <FitBounds shopPos={shopPos} userPos={userPos} routeCoords={routeCoords} />
-    </MapContainer>
+    </MapboxBase>
   );
 }
