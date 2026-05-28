@@ -1,6 +1,7 @@
-import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import L, { shopIcon, userIcon } from "./leaflet-setup";
+import { useEffect, useRef } from "react";
+import { Marker, Popup, useMap } from "react-map-gl/mapbox";
+import { useState } from "react";
+import MapboxBase, { ShopMarkerPin, UserMarkerDot } from "./MapboxBase";
 
 interface NearbyShop {
   slug: string;
@@ -14,58 +15,84 @@ interface Props {
   shops: NearbyShop[];
 }
 
-function Fit({ userLocation, shops }: Props) {
-  const map = useMap();
+function FitBounds({ userLocation, shops }: Props) {
+  const { current: map } = useMap();
   useEffect(() => {
+    if (!map) return;
     const pts: [number, number][] = [
-      ...shops.map((s) => [s.lat, s.lng] as [number, number]),
-      ...(userLocation ? [[userLocation.lat, userLocation.lng] as [number, number]] : []),
+      ...shops.map((s) => [s.lng, s.lat] as [number, number]),
+      ...(userLocation ? [[userLocation.lng, userLocation.lat] as [number, number]] : []),
     ];
     if (pts.length === 0) return;
     if (pts.length === 1) {
-      map.setView(pts[0], 14);
-    } else {
-      map.fitBounds(L.latLngBounds(pts.map((p) => L.latLng(p[0], p[1]))), {
-        padding: [40, 40],
-      });
+      map.flyTo({ center: pts[0], zoom: 14, duration: 1200 });
+      return;
     }
-  }, [shops.length, userLocation?.lat, userLocation?.lng]);
+    const lngs = pts.map((p) => p[0]);
+    const lats = pts.map((p) => p[1]);
+    map.fitBounds(
+      [
+        [Math.min(...lngs), Math.min(...lats)],
+        [Math.max(...lngs), Math.max(...lats)],
+      ],
+      { padding: 60, duration: 1000, maxZoom: 15 },
+    );
+  }, [map, userLocation?.lat, userLocation?.lng, shops.length]);
   return null;
 }
 
 export default function NearbyMapInner({ userLocation, shops }: Props) {
-  const center: [number, number] = userLocation
-    ? [userLocation.lat, userLocation.lng]
+  const [active, setActive] = useState<NearbyShop | null>(null);
+  const initialCenter = userLocation
+    ? { longitude: userLocation.lng, latitude: userLocation.lat }
     : shops[0]
-      ? [shops[0].lat, shops[0].lng]
-      : [-6.7924, 39.2083]; // Dar es Salaam default
+      ? { longitude: shops[0].lng, latitude: shops[0].lat }
+      : { longitude: 39.2083, latitude: -6.7924 };
 
   return (
-    <MapContainer center={center} zoom={13} scrollWheelZoom className="h-full w-full">
-      <TileLayer
-        attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <MapboxBase
+      initialViewState={{ ...initialCenter, zoom: 12, pitch: 45, bearing: -10 }}
+    >
       {userLocation && (
-        <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
-          <Popup>You are here</Popup>
+        <Marker longitude={userLocation.lng} latitude={userLocation.lat} anchor="center">
+          <UserMarkerDot />
         </Marker>
       )}
       {shops.map((s) => (
-        <Marker key={s.slug} position={[s.lat, s.lng]} icon={shopIcon}>
-          <Popup>
-            <div className="space-y-1">
-              <strong>{s.name}</strong>
-              <div>
-                <a href={`/store/${s.slug}`} className="text-primary underline text-xs">
-                  Open shop →
-                </a>
-              </div>
-            </div>
-          </Popup>
+        <Marker
+          key={s.slug}
+          longitude={s.lng}
+          latitude={s.lat}
+          anchor="bottom"
+          onClick={(e) => {
+            e.originalEvent.stopPropagation();
+            setActive(s);
+          }}
+        >
+          <ShopMarkerPin />
         </Marker>
       ))}
-      <Fit userLocation={userLocation} shops={shops} />
-    </MapContainer>
+      {active && (
+        <Popup
+          longitude={active.lng}
+          latitude={active.lat}
+          anchor="top"
+          onClose={() => setActive(null)}
+          closeButton={false}
+          offset={12}
+        >
+          <div className="space-y-1 min-w-[140px]">
+            <strong className="block text-sm">{active.name}</strong>
+            <a
+              href={`/store/${active.slug}`}
+              className="text-primary text-xs hover:underline"
+            >
+              Open shop →
+            </a>
+          </div>
+        </Popup>
+      )}
+      <FitBounds userLocation={userLocation} shops={shops} />
+    </MapboxBase>
   );
 }
